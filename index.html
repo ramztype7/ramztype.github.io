@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TypeFlow</title>
+
+<style>
+:root{
+  --bg:#323437;
+  --panel:#2c2e31;
+  --text:#d1d0c5;
+  --muted:#646669;
+  --accent:#e2b714;
+  --error:#ca4754;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  transition:.2s;
+}
+
+body.light{
+  --bg:#f4f4f4;
+  --panel:#e5e5e5;
+  --text:#333;
+  --muted:#888;
+  --accent:#d19a00;
+  --error:#d33;
+}
+
+.container{
+  width:92%;
+  max-width:1150px;
+  margin:auto;
+}
+
+/* HEADER */
+
+header{
+  height:100px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  letter-spacing:-1px;
+}
+
+.logo span{
+  color:var(--muted);
+}
+
+.header-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.icon{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:22px;
+  cursor:pointer;
+}
+
+.icon:hover{
+  color:var(--text);
+}
+
+/* SETTINGS */
+
+.settings{
+  background:var(--panel);
+  border-radius:10px;
+  padding:15px;
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  align-items:end;
+}
+
+.group{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.label{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+}
+
+button,
+select{
+  font-family:inherit;
+}
+
+.mode button,
+.time button,
+.toggle{
+  background:transparent;
+  color:var(--muted);
+  border:0;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.mode button:hover,
+.time button:hover,
+.toggle:hover{
+  color:var(--text);
+}
+
+.mode button.active,
+.time button.active,
+.toggle.active{
+  background:rgba(255,255,255,.05);
+  color:var(--accent);
+}
+
+.language{
+  background:rgba(0,0,0,.1);
+  color:var(--text);
+  border:0;
+  border-radius:6px;
+  padding:8px;
+  outline:none;
+}
+
+/* STATS */
+
+.stats{
+  display:flex;
+  gap:35px;
+  margin:35px 0 10px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.stats b{
+  color:var(--accent);
+  font-size:18px;
+}
+
+/* TEST */
+
+.test{
+  margin-top:15px;
+  min-height:240px;
+  position:relative;
+  cursor:text;
+}
+
+.words{
+  font-family:monospace;
+  font-size:30px;
+  line-height:1.7;
+  word-spacing:8px;
+}
+
+.char{
+  color:var(--muted);
+  position:relative;
+}
+
+.correct{
+  color:var(--text);
+}
+
+.incorrect{
+  color:var(--error);
+}
+
+.caret{
+  border-left:2px solid var(--accent);
+  animation:blink 1s infinite;
+}
+
+@keyframes blink{
+  50%{border-color:transparent}
+}
+
+#input{
+  position:absolute;
+  left:-9999px;
+  opacity:0;
+}
+
+/* RESTART */
+
+.restart{
+  display:block;
+  margin:30px auto;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:32px;
+  cursor:pointer;
+}
+
+.restart:hover{
+  color:var(--text);
+  transform:rotate(-30deg);
+}
+
+/* RESULT */
+
+.result{
+  background:var(--panel);
+  border-radius:10px;
+  padding:30px;
+  margin-top:30px;
+}
+
+.hidden{
+  display:none;
+}
+
+.result-title{
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+.result-number{
+  font-size:35px;
+}
+
+.result-label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* FOOTER */
+
+footer{
+  text-align:center;
+  margin:60px 0 30px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* MODAL */
+
+.modal{
+  border:0;
+  border-radius:12px;
+  background:var(--panel);
+  color:var(--text);
+  padding:25px;
+  width:400px;
+  max-width:90%;
+}
+
+.modal::backdrop{
+  background:rgba(0,0,0,.7);
+}
+
+.modal h2{
+  margin-top:0;
+}
+
+.close{
+  float:right;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:22px;
+  cursor:pointer;
+}
+
+.history{
+  max-height:300px;
+  overflow:auto;
+}
+
+.history-item{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  background:rgba(0,0,0,.1);
+  border-radius:5px;
+  margin-bottom:6px;
+  font-size:12px;
+}
+
+.clear{
+  background:var(--error);
+  color:white;
+  border:0;
+  border-radius:5px;
+  padding:8px 12px;
+  cursor:pointer;
+}
+
+@media(max-width:700px){
+  .words{
+    font-size:23px;
+  }
+
+  .result-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+  <div class="logo">
+    type<span>flow</span>
+  </div>
+
+  <div class="header-buttons">
+    <button class="icon" onclick="openHistory()">◷</button>
+    <button class="icon" onclick="changeTheme()">◐</button>
+    <button class="icon" onclick="openSettings()">⚙</button>
+  </div>
+
+</header>
+
+
+<!-- SETTINGS -->
+
+<div class="settings">
+
+  <div class="group">
+
+    <div class="label">Mode</div>
+
+    <div class="mode">
+
+      <button class="modeBtn active" onclick="setMode('time',this)">
+        time
+      </button>
+
+      <button class="modeBtn" onclick="setMode('words',this)">
+        words
+      </button>
+
+      <button class="modeBtn" onclick="setMode('quote',this)">
+        quote
+      </button>
+
+      <button class="modeBtn" onclick="setMode('zen',this)">
+        zen
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="group">
+
+    <div class="label">Time</div>
+
+    <div class="time">
+
+      <button class="timeBtn active" onclick="setTime(15,this)">
+        15
+      </button>
+
+      <button class="timeBtn" onclick="setTime(30,this)">
+        30
+      </button>
+
+      <button class="timeBtn" onclick="setTime(60,this)">
+        60
+      </button>
+
+      <button class="timeBtn" onclick="setTime(120,this)">
+        120
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="group">
+
+    <div class="label">Options</div>
+
+    <div>
+
+      <button id="punctuation"
+              class="toggle"
+              onclick="toggleOption('punctuation')">
+        punctuation
+      </button>
+
+      <button id="numbers"
+              class="toggle"
+              onclick="toggleOption('numbers')">
+        numbers
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="group">
+
+    <div class="label">Language</div>
+
+    <select id="language" class="language" onchange="restart()">
+
+      <option value="english">
+        English
+      </option>
+
+      <option value="uzbek">
+        Uzbek
+      </option>
+
+      <option value="russian">
+        Russian
+      </option>
+
+    </select>
+
+  </div>
+
+</div>
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+  <div>
+    time:
+    <b id="timer">15</b>
+  </div>
+
+  <div>
+    wpm:
+    <b id="wpm">0</b>
+  </div>
+
+  <div>
+    acc:
+    <b id="accuracy">100%</b>
+  </div>
+
+</div>
+
+
+<!-- TEST -->
+
+<div class="test" onclick="focusInput()">
+
+  <div id="words" class="words"></div>
+
+  <input
+    id="input"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+  >
+
+</div>
+
+
+<button class="restart" onclick="restart()">
+  ↻
+</button>
+
+
+<!-- RESULT -->
+
+<div id="result" class="result hidden">
+
+  <div class="result-title">
+    test complete
+  </div>
+
+  <div class="result-grid">
+
+    <div>
+      <div id="finalWpm"
+           class="result-number"
+           style="color:var(--accent)">
+        0
+      </div>
+      <div class="result-label">
+        WPM
+      </div>
+    </div>
+
+    <div>
+      <div id="finalAccuracy"
+           class="result-number">
+        0%
+      </div>
+      <div class="result-label">
+        ACCURACY
+      </div>
+    </div>
+
+    <div>
+      <div id="finalChars"
+           class="result-number">
+        0
+      </div>
+      <div class="result-label">
+        CHARACTERS
+      </div>
+    </div>
+
+    <div>
+      <div id="finalTime"
+           class="result-number">
+        0s
+      </div>
+      <div class="result-label">
+        TIME
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<footer>
+  Tab + Enter — restart &nbsp;&nbsp; | &nbsp;&nbsp;
+  Esc — reset
+</footer>
+
+</div>
+
+
+<!-- SETTINGS MODAL -->
+
+<dialog id="settingsModal" class="modal">
+
+  <button class="close"
+          onclick="closeSettings()">
+    ×
+  </button>
+
+  <h2>Settings</h2>
+
+  <p>
+    Font size:
+    <input
+      type="range"
+      min="20"
+      max="50"
+      value="30"
+      oninput="changeFont(this.value)"
+    >
+  </p>
+
+  <p>
+    <button
+      class="toggle"
+      onclick="changeTheme()">
+      Change theme
+    </button>
+  </p>
+
+</dialog>
+
+
+<!-- HISTORY MODAL -->
+
+<dialog id="historyModal" class="modal">
+
+  <button class="close"
+          onclick="closeHistory()">
+    ×
+  </button>
+
+  <h2>History</h2>
+
+  <div id="history" class="history"></div>
+
+  <button class="clear"
+          onclick="clearHistory()">
+    Clear history
+  </button>
+
+</dialog>
+
+
+<script>
+
+/* =========================
+   WORD LISTS
+========================= */
+
+const WORDS = {
+
+english: `
+the of and to a in is you that it he was for on are as with his they I at be this have from or one had by word but not what all were we when your can said there use an each which she do how their if will up other about out many then them these so some her would make like him into time has look two more write go see number way could people my than first water been call who oil its now find long down day did get come made may part
+`,
+
+uzbek: `
+men sen u bu va ham uchun bilan bir nima qanday qayerda yana juda yaxshi katta kichik vaqt odam kun yil uy maktab kitob ish do‘st oila hayot bugun ertaga kecha yangi eski tez sekin kerak mumkin fikr gap yozish o‘qish ishlash bor kel ol ber ko‘r bil yur tur qil ayt so‘ra javob boshlash tugatish dunyo til kelajak maqsad natija muvaffaqiyat bilim
+`,
+
+russian: `
+и в не на я что он с а как это по но мы к у из за от для до же или был быть была были они ты вы его ее их мне тебе наш ваш этот тот когда где кто уже еще только очень можно нужно потому чтобы если человек время день год жизнь слово дело дом школа книга работа друг семья сегодня завтра вчера новый старый быстро медленно сказать видеть знать сделать
+`
+
+};
+
+
+const QUOTES = [
+
+"Success is the sum of small efforts repeated day in and day out.",
+
+"The future depends on what you do today.",
+
+"Learning never exhausts the mind.",
+
+"Great things are done by a series of small things brought together.",
+
+"Believe you can and you are halfway there."
+
+];
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let mode = "time";
+
+let testTime = 15;
+
+let timeLeft = 15;
+
+let started = false;
+
+let finished = false;
+
+let startTime = 0;
+
+let interval = null;
+
+let correctChars = 0;
+
+let typedChars = 0;
+
+let currentText = "";
+
+let punctuation = false;
+
+let numbers = false;
+
+let isDark = true;
+
+let history =
+JSON.parse(
+localStorage.getItem("typingHistory") || "[]"
+);
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const wordsElement =
+document.getElementById("words");
+
+const input =
+document.getElementById("input");
+
+const timer =
+document.getElementById("timer");
+
+const wpmElement =
+document.getElementById("wpm");
+
+const accuracyElement =
+document.getElementById("accuracy");
+
+const result =
+document.getElementById("result");
+
+
+/* =========================
+   CREATE WORDS
+========================= */
+
+function randomWord(){
+
+  const lang =
+  document.getElementById("language").value;
+
+  const list =
+  WORDS[lang].trim().split(/\s+/);
+
+  return list[
+    Math.floor(
+      Math.random()*list.length
+    )
+  ];
+
+}
+
+
+function createText(){
+
+  if(mode === "quote"){
+
+    currentText =
+    QUOTES[
+      Math.floor(
+        Math.random()*QUOTES.length
+      )
+    ];
+
+    return;
+  }
+
+
+  if(mode === "zen"){
+
+    let arr=[];
+
+    for(let i=0;i<100;i++){
+
+      arr.push(randomWord());
+
+    }
+
+    currentText=arr.join(" ");
+
+    return;
+  }
+
+
+  let arr=[];
+
+  let amount =
+  mode === "words" ? 50 : 120;
+
+  for(let i=0;i<amount;i++){
+
+    arr.push(randomWord());
+
+  }
+
+  currentText =
+  arr.join(" ");
+
+
+  if(punctuation){
+
+    currentText =
+    currentText.replace(
+      /\s(.*?)\s/g,
+      match => {
+
+        if(Math.random()<0.12){
+
+          return ","+match;
+
+        }
+
+        return match;
+
+      }
+    );
+
+  }
+
+
+  if(numbers){
+
+    currentText +=
+    " " +
+    Math.floor(
+      Math.random()*9999
+    ) +
+    " " +
+    Math.floor(
+      Math.random()*9999
+    );
+
+  }
+
+}
+
+
+/* =========================
+   RENDER TEXT
+========================= */
+
+function render(){
+
+  createText();
+
+  wordsElement.innerHTML="";
+
+  [...currentText].forEach(
+    char => {
+
+      const span =
+      document.createElement("span");
+
+      span.className="char";
+
+      span.textContent=char;
+
+      wordsElement.appendChild(span);
+
+    }
+  );
+
+  resetCaret();
+
+}
+
+
+/* =========================
+   CARET
+========================= */
+
+function resetCaret(){
+
+  const chars =
+  document.querySelectorAll(".char");
+
+  chars.forEach(
+    x => x.classList.remove("caret")
+  );
+
+  if(chars[0]){
+    chars[0].classList.add("caret");
+  }
+
+}
+
+
+function moveCaret(position){
+
+  const chars =
+  document.querySelectorAll(".char");
+
+  chars.forEach(
+    x => x.classList.remove("caret")
+  );
+
+  if(chars[position]){
+
+    chars[position]
+      .classList.add("caret");
+
+  }
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+function start(){
+
+  if(started || finished)
+    return;
+
+  started=true;
+
+  startTime=
+  performance.now();
+
+  interval =
+  setInterval(updateTimer,100);
+
+}
+
+
+/* =========================
+   TIMER
+========================= */
+
+function updateTimer(){
+
+  if(mode === "time"){
+
+    const elapsed =
+    (performance.now()-startTime)/1000;
+
+    timeLeft =
+    Math.max(
+      0,
+      testTime-elapsed
+    );
+
+    timer.textContent =
+    timeLeft.toFixed(1);
+
+    if(timeLeft<=0){
+
+      finish();
+
+      return;
+
+    }
+
+  }else{
+
+    timer.textContent =
+    (
+      (performance.now()-startTime)/1000
+    ).toFixed(1);
+
+  }
+
+  updateStats();
+
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+input.addEventListener(
+"input",
+function(){
+
+  if(finished)
+    return;
+
+  start();
+
+  const typed =
+  input.value;
+
+  typedChars=typed.length;
+
+  correctChars=0;
+
+  const chars =
+  document.querySelectorAll(".char");
+
+
+  chars.forEach(
+    x =>
+    x.classList.remove(
+      "correct",
+      "incorrect"
+    )
+  );
+
+
+  [...typed].forEach(
+    (char,index)=>{
+
+      if(!chars[index])
+        return;
+
+      if(
+        char ===
+        chars[index].textContent
+      ){
+
+        chars[index]
+        .classList.add("correct");
+
+        correctChars++;
+
+      }else{
+
+        chars[index]
+        .classList.add("incorrect");
+
+      }
+
+    }
+  );
+
+
+  moveCaret(typed.length);
+
+  updateStats();
+
+
+  if(
+    mode === "words" &&
+    typed.length>=currentText.length
+  ){
+
+    finish();
+
+  }
+
+
+  if(
+    mode === "quote" &&
+    typed.length>=currentText.length
+  ){
+
+    finish();
+
+  }
+
+});
+
+
+/* =========================
+   STATS
+========================= */
+
+function getSeconds(){
+
+  if(!started)
+    return 0;
+
+  if(mode === "time"){
+
+    return testTime-timeLeft;
+
+  }
+
+  return (
+    performance.now()-startTime
+  )/1000;
+
+}
+
+
+function calculateWPM(){
+
+  const sec=getSeconds();
+
+  if(sec<=0)
+    return 0;
+
+  return Math.round(
+    (correctChars/5)/
+    (sec/60)
+  );
+
+}
+
+
+function calculateAccuracy(){
+
+  if(typedChars===0)
+    return 100;
+
+  return Math.round(
+    (correctChars/typedChars)*100
+  );
+
+}
+
+
+function updateStats(){
+
+  wpmElement.textContent =
+  calculateWPM();
+
+  accuracyElement.textContent =
+  calculateAccuracy()+"%";
+
+}
+
+
+/* =========================
+   FINISH
+========================= */
+
+function finish(){
+
+  if(finished)
+    return;
+
+  finished=true;
+
+  clearInterval(interval);
+
+  const wpm =
+  calculateWPM();
+
+  const acc =
+  calculateAccuracy();
+
+  const seconds =
+  getSeconds();
+
+
+  document.getElementById(
+    "finalWpm"
+  ).textContent=wpm;
+
+
+  document.getElementById(
+    "finalAccuracy"
+  ).textContent=
+  acc+"%";
+
+
+  document.getElementById(
+    "finalChars"
+  ).textContent=
+  correctChars+"/"+typedChars;
+
+
+  document.getElementById(
+    "finalTime"
+  ).textContent=
+  seconds.toFixed(1)+"s";
+
+
+  result.classList.remove("hidden");
+
+
+  history.unshift({
+
+    wpm:wpm,
+
+    accuracy:acc,
+
+    chars:
+    correctChars+"/"+typedChars,
+
+    date:
+    new Date().toLocaleString()
+
+  });
+
+
+  history =
+  history.slice(0,30);
+
+
+  localStorage.setItem(
+    "typingHistory",
+    JSON.stringify(history)
+  );
+
+}
+
+
+/* =========================
+   RESTART
+========================= */
+
+function restart(){
+
+  clearInterval(interval);
+
+  started=false;
+
+  finished=false;
+
+  correctChars=0;
+
+  typedChars=0;
+
+  input.value="";
+
+  timeLeft=testTime;
+
+  timer.textContent=
+  testTime;
+
+  wpmElement.textContent="0";
+
+  accuracyElement.textContent="100%";
+
+  result.classList.add("hidden");
+
+  render();
+
+  input.focus();
+
+}
+
+
+/* =========================
+   MODE
+========================= */
+
+function setMode(newMode,button){
+
+  mode=newMode;
+
+  document
+  .querySelectorAll(".modeBtn")
+  .forEach(
+    b=>b.classList.remove("active")
+  );
+
+  button.classList.add("active");
+
+  restart();
+
+}
+
+
+/* =========================
+   TIME
+========================= */
+
+function setTime(seconds,button){
+
+  testTime=seconds;
+
+  document
+  .querySelectorAll(".timeBtn")
+  .forEach(
+    b=>b.classList.remove("active")
+  );
+
+  button.classList.add("active");
+
+  restart();
+
+}
+
+
+/* =========================
+   OPTIONS
+========================= */
+
+function toggleOption(option){
+
+  if(option==="punctuation"){
+
+    punctuation=!punctuation;
+
+    document
+    .getElementById("punctuation")
+    .classList.toggle(
+      "active",
+      punctuation
+    );
+
+  }
+
+
+  if(option==="numbers"){
+
+    numbers=!numbers;
+
+    document
+    .getElementById("numbers")
+    .classList.toggle(
+      "active",
+      numbers
+    );
+
+  }
+
+  restart();
+
+}
+
+
+/* =========================
+   FOCUS
+========================= */
+
+function focusInput(){
+
+  input.focus();
+
+}
+
+
+/* =========================
+   THEME
+========================= */
+
+function changeTheme(){
+
+  isDark=!isDark;
+
+  document.body
+  .classList.toggle(
+    "light",
+    !isDark
+  );
+
+}
+
+
+/* =========================
+   FONT SIZE
+========================= */
+
+function changeFont(size){
+
+  wordsElement.style.fontSize=
+  size+"px";
+
+}
+
+
+/* =========================
+   SETTINGS MODAL
+========================= */
+
+function openSettings(){
+
+  document
+  .getElementById("settingsModal")
+  .showModal();
+
+}
+
+
+function closeSettings(){
+
+  document
+  .getElementById("settingsModal")
+  .close();
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function openHistory(){
+
+  const list =
+  document.getElementById("history");
+
+  list.innerHTML="";
+
+
+  if(history.length===0){
+
+    list.innerHTML=
+    "<p>No results yet.</p>";
+
+  }else{
+
+    history.forEach(item=>{
+
+      const div =
+      document.createElement("div");
+
+      div.className=
+      "history-item";
+
+      div.innerHTML=`
+
+        <b>${item.wpm} WPM</b>
+
+        <span>${item.accuracy}%</span>
+
+        <span>${item.chars}</span>
+
+        <span>${item.date}</span>
+
+      `;
+
+      list.appendChild(div);
+
+    });
+
+  }
+
+
+  document
+  .getElementById("historyModal")
+  .showModal();
+
+}
+
+
+function closeHistory(){
+
+  document
+  .getElementById("historyModal")
+  .close();
+
+}
+
+
+function clearHistory(){
+
+  history=[];
+
+  localStorage.removeItem(
+    "typingHistory"
+  );
+
+  openHistory();
+
+}
+
+
+/* =========================
+   KEYBOARD SHORTCUTS
+========================= */
+
+let tabPressed=false;
+
+document.addEventListener(
+"keydown",
+function(e){
+
+  if(e.key==="Tab"){
+
+    e.preventDefault();
+
+    tabPressed=true;
+
+  }
+
+  else if(
+    tabPressed &&
+    e.key==="Enter"
+  ){
+
+    e.preventDefault();
+
+    tabPressed=false;
+
+    restart();
+
+  }
+
+  else if(e.key==="Escape"){
+
+    restart();
+
+  }
+
+});
+
+
+/* =========================
+   START
+========================= */
+
+render();
+
+input.focus();
+
+</script>
+
+</body>
+</html>
