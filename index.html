@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TypeFlow</title>
+
+<!-- SEO Meta Tags -->
+<title>TypeFlow — Minimalist Typing Test & Speed Practice</title>
+<meta name="description" content="TypeFlow is a clean, minimalist typing speed test website to measure your WPM and accuracy in English, Uzbek, and Russian.">
+<meta name="keywords" content="typing test, typeflow, wpm test, keyboard practice, klaviatura tezligini sinash, клавиатура тренажер">
+<meta name="author" content="Ramzddin">
+
+<!-- Open Graph / Social Media Preview -->
+<meta property="og:title" content="TypeFlow — Minimalist Typing Test">
+<meta property="og:description" content="Test your typing speed and improve your WPM with TypeFlow.">
+<meta property="og:type" content="website">
 
 <style>
 :root{
@@ -26,11 +36,11 @@ body{
 }
 
 body.light{
-  --bg:#f4f4f4;
+  --bg:#f2f2f2;
   --panel:#e5e5e5;
   --text:#333;
   --muted:#888;
-  --accent:#d19a00;
+  --accent:#c49300;
   --error:#d33;
 }
 
@@ -39,8 +49,6 @@ body.light{
   max-width:1150px;
   margin:auto;
 }
-
-/* HEADER */
 
 header{
   height:100px;
@@ -52,7 +60,6 @@ header{
 .logo{
   font-size:30px;
   font-weight:bold;
-  letter-spacing:-1px;
 }
 
 .logo span{
@@ -70,13 +77,14 @@ header{
   color:var(--muted);
   font-size:22px;
   cursor:pointer;
+  padding:8px;
+  border-radius:6px;
 }
 
 .icon:hover{
   color:var(--text);
+  background:rgba(255,255,255,.04);
 }
-
-/* SETTINGS */
 
 .settings{
   background:var(--panel);
@@ -100,8 +108,7 @@ header{
   text-transform:uppercase;
 }
 
-button,
-select{
+button,select{
   font-family:inherit;
 }
 
@@ -125,8 +132,8 @@ select{
 .mode button.active,
 .time button.active,
 .toggle.active{
-  background:rgba(255,255,255,.05);
   color:var(--accent);
+  background:rgba(255,255,255,.05);
 }
 
 .language{
@@ -137,8 +144,6 @@ select{
   padding:8px;
   outline:none;
 }
-
-/* STATS */
 
 .stats{
   display:flex;
@@ -152,8 +157,6 @@ select{
   color:var(--accent);
   font-size:18px;
 }
-
-/* TEST */
 
 .test{
   margin-top:15px;
@@ -193,11 +196,12 @@ select{
 
 #input{
   position:absolute;
-  left:-9999px;
+  left:-10000px;
+  top:0;
+  width:1px;
+  height:1px;
   opacity:0;
 }
-
-/* RESTART */
 
 .restart{
   display:block;
@@ -213,8 +217,6 @@ select{
   color:var(--text);
   transform:rotate(-30deg);
 }
-
-/* RESULT */
 
 .result{
   background:var(--panel);
@@ -247,16 +249,12 @@ select{
   font-size:12px;
 }
 
-/* FOOTER */
-
 footer{
   text-align:center;
   margin:60px 0 30px;
   color:var(--muted);
   font-size:11px;
 }
-
-/* MODAL */
 
 .modal{
   border:0;
@@ -293,6 +291,7 @@ footer{
 .history-item{
   display:flex;
   justify-content:space-between;
+  gap:10px;
   padding:10px;
   background:rgba(0,0,0,.1);
   border-radius:5px;
@@ -326,7 +325,6 @@ footer{
 <div class="container">
 
 <header>
-
   <div class="logo">
     type<span>flow</span>
   </div>
@@ -336,74 +334,69 @@ footer{
     <button class="icon" onclick="changeTheme()">◐</button>
     <button class="icon" onclick="openSettings()">⚙</button>
   </div>
-
 </header>
 
-
-<!-- SETTINGS -->
 
 <div class="settings">
 
   <div class="group">
-
     <div class="label">Mode</div>
 
     <div class="mode">
-
-      <button class="modeBtn active" onclick="setMode('time',this)">
+      <button class="modeBtn active"
+              onclick="setMode('time',this)">
         time
       </button>
 
-      <button class="modeBtn" onclick="setMode('words',this)">
+      <button class="modeBtn"
+              onclick="setMode('words',this)">
         words
       </button>
 
-      <button class="modeBtn" onclick="setMode('quote',this)">
+      <button class="modeBtn"
+              onclick="setMode('quote',this)">
         quote
       </button>
 
-      <button class="modeBtn" onclick="setMode('zen',this)">
+      <button class="modeBtn"
+              onclick="setMode('zen',this)">
         zen
       </button>
-
     </div>
-
   </div>
 
 
   <div class="group">
-
     <div class="label">Time</div>
 
     <div class="time">
-
-      <button class="timeBtn active" onclick="setTime(15,this)">
+      <button class="timeBtn active"
+              onclick="setTime(15,this)">
         15
       </button>
 
-      <button class="timeBtn" onclick="setTime(30,this)">
+      <button class="timeBtn"
+              onclick="setTime(30,this)">
         30
       </button>
 
-      <button class="timeBtn" onclick="setTime(60,this)">
+      <button class="timeBtn"
+              onclick="setTime(60,this)">
         60
       </button>
 
-      <button class="timeBtn" onclick="setTime(120,this)">
+      <button class="timeBtn"
+              onclick="setTime(120,this)">
         120
       </button>
-
     </div>
-
   </div>
 
 
   <div class="group">
-
     <div class="label">Options</div>
 
     <div>
-
       <button id="punctuation"
               class="toggle"
               onclick="toggleOption('punctuation')">
@@ -415,38 +408,26 @@ footer{
               onclick="toggleOption('numbers')">
         numbers
       </button>
-
     </div>
-
   </div>
 
 
   <div class="group">
-
     <div class="label">Language</div>
 
-    <select id="language" class="language" onchange="restart()">
+    <select id="language"
+            class="language"
+            onchange="restart()">
 
-      <option value="english">
-        English
-      </option>
-
-      <option value="uzbek">
-        Uzbek
-      </option>
-
-      <option value="russian">
-        Russian
-      </option>
+      <option value="english">English</option>
+      <option value="uzbek">Uzbek</option>
+      <option value="russian">Russian</option>
 
     </select>
-
   </div>
 
 </div>
 
-
-<!-- STATS -->
 
 <div class="stats">
 
@@ -468,8 +449,6 @@ footer{
 </div>
 
 
-<!-- TEST -->
-
 <div class="test" onclick="focusInput()">
 
   <div id="words" class="words"></div>
@@ -485,14 +464,14 @@ footer{
 </div>
 
 
-<button class="restart" onclick="restart()">
+<button class="restart"
+        onclick="restart()">
   ↻
 </button>
 
 
-<!-- RESULT -->
-
-<div id="result" class="result hidden">
+<div id="result"
+     class="result hidden">
 
   <div class="result-title">
     test complete
@@ -506,9 +485,7 @@ footer{
            style="color:var(--accent)">
         0
       </div>
-      <div class="result-label">
-        WPM
-      </div>
+      <div class="result-label">WPM</div>
     </div>
 
     <div>
@@ -516,9 +493,7 @@ footer{
            class="result-number">
         0%
       </div>
-      <div class="result-label">
-        ACCURACY
-      </div>
+      <div class="result-label">ACCURACY</div>
     </div>
 
     <div>
@@ -526,9 +501,7 @@ footer{
            class="result-number">
         0
       </div>
-      <div class="result-label">
-        CHARACTERS
-      </div>
+      <div class="result-label">CHARACTERS</div>
     </div>
 
     <div>
@@ -536,9 +509,7 @@ footer{
            class="result-number">
         0s
       </div>
-      <div class="result-label">
-        TIME
-      </div>
+      <div class="result-label">TIME</div>
     </div>
 
   </div>
@@ -547,16 +518,14 @@ footer{
 
 
 <footer>
-  Tab + Enter — restart &nbsp;&nbsp; | &nbsp;&nbsp;
-  Esc — reset
+  Tab + Enter — restart
 </footer>
 
 </div>
 
 
-<!-- SETTINGS MODAL -->
-
-<dialog id="settingsModal" class="modal">
+<dialog id="settingsModal"
+        class="modal">
 
   <button class="close"
           onclick="closeSettings()">
@@ -577,9 +546,8 @@ footer{
   </p>
 
   <p>
-    <button
-      class="toggle"
-      onclick="changeTheme()">
+    <button class="toggle"
+            onclick="changeTheme()">
       Change theme
     </button>
   </p>
@@ -587,9 +555,8 @@ footer{
 </dialog>
 
 
-<!-- HISTORY MODAL -->
-
-<dialog id="historyModal" class="modal">
+<dialog id="historyModal"
+        class="modal">
 
   <button class="close"
           onclick="closeHistory()">
@@ -598,7 +565,8 @@ footer{
 
   <h2>History</h2>
 
-  <div id="history" class="history"></div>
+  <div id="history"
+       class="history"></div>
 
   <button class="clear"
           onclick="clearHistory()">
@@ -611,37 +579,37 @@ footer{
 <script>
 
 /* =========================
-   WORD LISTS
+   WORDS
 ========================= */
 
 const WORDS = {
 
-english: `
-the of and to a in is you that it he was for on are as with his they I at be this have from or one had by word but not what all were we when your can said there use an each which she do how their if will up other about out many then them these so some her would make like him into time has look two more write go see number way could people my than first water been call who oil its now find long down day did get come made may part
-`,
+  english: `
+  the of and to a in is you that it he was for on are as with his they I at be this have from or one had by word but not what all were we when your can said there use an each which she do how their if will up other about out many then them these so some her would make like him into time has look two more write go see number way could people my than first water been call who oil its now find long down day did get come made may part
+  `,
 
-uzbek: `
-men sen u bu va ham uchun bilan bir nima qanday qayerda yana juda yaxshi katta kichik vaqt odam kun yil uy maktab kitob ish do‘st oila hayot bugun ertaga kecha yangi eski tez sekin kerak mumkin fikr gap yozish o‘qish ishlash bor kel ol ber ko‘r bil yur tur qil ayt so‘ra javob boshlash tugatish dunyo til kelajak maqsad natija muvaffaqiyat bilim
-`,
+  uzbek: `
+  men sen u bu va ham uchun bilan bir nima qanday qayerda yana juda yaxshi katta kichik vaqt odam kun yil uy maktab kitob ish do‘st oila hayot bugun ertaga kecha yangi eski tez sekin kerak mumkin fikr gap yozish o‘qish ishlash bor kel ol ber ko‘r bil yur tur qil ayt so‘ra javob boshlash tugatish dunyo til kelajak maqsad natija bilim
+  `,
 
-russian: `
-и в не на я что он с а как это по но мы к у из за от для до же или был быть была были они ты вы его ее их мне тебе наш ваш этот тот когда где кто уже еще только очень можно нужно потому чтобы если человек время день год жизнь слово дело дом школа книга работа друг семья сегодня завтра вчера новый старый быстро медленно сказать видеть знать сделать
-`
+  russian: `
+  и в не на я что он с а как это по но мы к у из за от для до же или был быть была были они ты вы его ее их мне тебе наш ваш этот тот когда где кто уже еще только очень можно нужно потому чтобы если человек время день год жизнь слово дело дом школа книга работа друг семья сегодня завтра вчера новый старый быстро медленно сказать видеть знать сделать
+  `
 
 };
 
 
 const QUOTES = [
 
-"Success is the sum of small efforts repeated day in and day out.",
+  "Success is the sum of small efforts repeated every day.",
 
-"The future depends on what you do today.",
+  "The future depends on what you do today.",
 
-"Learning never exhausts the mind.",
+  "Learning never exhausts the mind.",
 
-"Great things are done by a series of small things brought together.",
+  "Great things are done by a series of small things brought together.",
 
-"Believe you can and you are halfway there."
+  "Believe you can and you are halfway there."
 
 ];
 
@@ -676,10 +644,14 @@ let numbers = false;
 
 let isDark = true;
 
+let tabPressed = false;
+
+let tabTimer = null;
+
 let history =
-JSON.parse(
-localStorage.getItem("typingHistory") || "[]"
-);
+  JSON.parse(
+    localStorage.getItem("typingHistory") || "[]"
+  );
 
 
 /* =========================
@@ -687,55 +659,61 @@ localStorage.getItem("typingHistory") || "[]"
 ========================= */
 
 const wordsElement =
-document.getElementById("words");
+  document.getElementById("words");
 
 const input =
-document.getElementById("input");
+  document.getElementById("input");
 
 const timer =
-document.getElementById("timer");
+  document.getElementById("timer");
 
 const wpmElement =
-document.getElementById("wpm");
+  document.getElementById("wpm");
 
 const accuracyElement =
-document.getElementById("accuracy");
+  document.getElementById("accuracy");
 
 const result =
-document.getElementById("result");
+  document.getElementById("result");
 
 
 /* =========================
-   CREATE WORDS
+   RANDOM WORD
 ========================= */
 
 function randomWord(){
 
   const lang =
-  document.getElementById("language").value;
+    document.getElementById("language").value;
 
   const list =
-  WORDS[lang].trim().split(/\s+/);
+    WORDS[lang]
+      .trim()
+      .split(/\s+/);
 
   return list[
     Math.floor(
-      Math.random()*list.length
+      Math.random() * list.length
     )
   ];
 
 }
 
 
+/* =========================
+   CREATE TEXT
+========================= */
+
 function createText(){
 
   if(mode === "quote"){
 
     currentText =
-    QUOTES[
-      Math.floor(
-        Math.random()*QUOTES.length
-      )
-    ];
+      QUOTES[
+        Math.floor(
+          Math.random() * QUOTES.length
+        )
+      ];
 
     return;
   }
@@ -743,24 +721,23 @@ function createText(){
 
   if(mode === "zen"){
 
-    let arr=[];
+    const arr = [];
 
     for(let i=0;i<100;i++){
-
       arr.push(randomWord());
-
     }
 
-    currentText=arr.join(" ");
+    currentText =
+      arr.join(" ");
 
     return;
   }
 
 
-  let arr=[];
-
   let amount =
-  mode === "words" ? 50 : 120;
+    mode === "words" ? 50 : 120;
+
+  const arr = [];
 
   for(let i=0;i<amount;i++){
 
@@ -769,26 +746,29 @@ function createText(){
   }
 
   currentText =
-  arr.join(" ");
+    arr.join(" ");
 
 
   if(punctuation){
 
     currentText =
-    currentText.replace(
-      /\s(.*?)\s/g,
-      match => {
+      currentText.replace(
+        /([a-zA-Zа-яА-ЯёЁ‘’]+)(?=\s)/g,
+        function(word){
 
-        if(Math.random()<0.12){
+          const r =
+            Math.random();
 
-          return ","+match;
+          if(r < 0.08)
+            return word + ",";
+
+          if(r < 0.10)
+            return word + ".";
+
+          return word;
 
         }
-
-        return match;
-
-      }
-    );
+      );
 
   }
 
@@ -796,14 +776,14 @@ function createText(){
   if(numbers){
 
     currentText +=
-    " " +
-    Math.floor(
-      Math.random()*9999
-    ) +
-    " " +
-    Math.floor(
-      Math.random()*9999
-    );
+      " " +
+      Math.floor(
+        Math.random() * 9999
+      ) +
+      " " +
+      Math.floor(
+        Math.random() * 9999
+      );
 
   }
 
@@ -811,24 +791,24 @@ function createText(){
 
 
 /* =========================
-   RENDER TEXT
+   RENDER
 ========================= */
 
 function render(){
 
   createText();
 
-  wordsElement.innerHTML="";
+  wordsElement.innerHTML = "";
 
   [...currentText].forEach(
-    char => {
+    function(char){
 
       const span =
-      document.createElement("span");
+        document.createElement("span");
 
-      span.className="char";
+      span.className = "char";
 
-      span.textContent=char;
+      span.textContent = char;
 
       wordsElement.appendChild(span);
 
@@ -847,10 +827,12 @@ function render(){
 function resetCaret(){
 
   const chars =
-  document.querySelectorAll(".char");
+    document.querySelectorAll(".char");
 
   chars.forEach(
-    x => x.classList.remove("caret")
+    function(char){
+      char.classList.remove("caret");
+    }
   );
 
   if(chars[0]){
@@ -863,17 +845,16 @@ function resetCaret(){
 function moveCaret(position){
 
   const chars =
-  document.querySelectorAll(".char");
+    document.querySelectorAll(".char");
 
   chars.forEach(
-    x => x.classList.remove("caret")
+    function(char){
+      char.classList.remove("caret");
+    }
   );
 
   if(chars[position]){
-
-    chars[position]
-      .classList.add("caret");
-
+    chars[position].classList.add("caret");
   }
 
 }
@@ -883,18 +864,21 @@ function moveCaret(position){
    START
 ========================= */
 
-function start(){
+function startTest(){
 
   if(started || finished)
     return;
 
-  started=true;
+  started = true;
 
-  startTime=
-  performance.now();
+  startTime =
+    performance.now();
 
   interval =
-  setInterval(updateTimer,100);
+    setInterval(
+      updateTimer,
+      100
+    );
 
 }
 
@@ -905,34 +889,38 @@ function start(){
 
 function updateTimer(){
 
+  if(!started || finished)
+    return;
+
+
   if(mode === "time"){
 
     const elapsed =
-    (performance.now()-startTime)/1000;
+      (performance.now() - startTime) / 1000;
 
     timeLeft =
-    Math.max(
-      0,
-      testTime-elapsed
-    );
+      Math.max(
+        0,
+        testTime - elapsed
+      );
 
     timer.textContent =
-    timeLeft.toFixed(1);
+      timeLeft.toFixed(1);
 
-    if(timeLeft<=0){
+    if(timeLeft <= 0){
 
       finish();
 
       return;
-
     }
 
   }else{
 
+    const elapsed =
+      (performance.now() - startTime) / 1000;
+
     timer.textContent =
-    (
-      (performance.now()-startTime)/1000
-    ).toFixed(1);
+      elapsed.toFixed(1);
 
   }
 
@@ -946,86 +934,84 @@ function updateTimer(){
 ========================= */
 
 input.addEventListener(
-"input",
-function(){
+  "input",
+  function(){
 
-  if(finished)
-    return;
+    if(finished)
+      return;
 
-  start();
+    startTest();
 
-  const typed =
-  input.value;
+    const typed =
+      input.value;
 
-  typedChars=typed.length;
+    typedChars =
+      typed.length;
 
-  correctChars=0;
+    correctChars = 0;
 
-  const chars =
-  document.querySelectorAll(".char");
-
-
-  chars.forEach(
-    x =>
-    x.classList.remove(
-      "correct",
-      "incorrect"
-    )
-  );
+    const chars =
+      document.querySelectorAll(".char");
 
 
-  [...typed].forEach(
-    (char,index)=>{
+    chars.forEach(
+      function(char){
 
-      if(!chars[index])
-        return;
-
-      if(
-        char ===
-        chars[index].textContent
-      ){
-
-        chars[index]
-        .classList.add("correct");
-
-        correctChars++;
-
-      }else{
-
-        chars[index]
-        .classList.add("incorrect");
+        char.classList.remove(
+          "correct",
+          "incorrect"
+        );
 
       }
+    );
+
+
+    [...typed].forEach(
+      function(char,index){
+
+        if(!chars[index])
+          return;
+
+        if(
+          char ===
+          chars[index].textContent
+        ){
+
+          chars[index]
+            .classList.add("correct");
+
+          correctChars++;
+
+        }else{
+
+          chars[index]
+            .classList.add("incorrect");
+
+        }
+
+      }
+    );
+
+
+    moveCaret(
+      typed.length
+    );
+
+    updateStats();
+
+
+    if(
+      (mode === "words" ||
+       mode === "quote") &&
+      typed.length >= currentText.length
+    ){
+
+      finish();
 
     }
-  );
-
-
-  moveCaret(typed.length);
-
-  updateStats();
-
-
-  if(
-    mode === "words" &&
-    typed.length>=currentText.length
-  ){
-
-    finish();
 
   }
-
-
-  if(
-    mode === "quote" &&
-    typed.length>=currentText.length
-  ){
-
-    finish();
-
-  }
-
-});
+);
 
 
 /* =========================
@@ -1037,29 +1023,33 @@ function getSeconds(){
   if(!started)
     return 0;
 
+
   if(mode === "time"){
 
-    return testTime-timeLeft;
+    return testTime - timeLeft;
 
   }
 
+
   return (
-    performance.now()-startTime
-  )/1000;
+    performance.now() -
+    startTime
+  ) / 1000;
 
 }
 
 
 function calculateWPM(){
 
-  const sec=getSeconds();
+  const seconds =
+    getSeconds();
 
-  if(sec<=0)
+  if(seconds <= 0)
     return 0;
 
   return Math.round(
-    (correctChars/5)/
-    (sec/60)
+    (correctChars / 5) /
+    (seconds / 60)
   );
 
 }
@@ -1067,11 +1057,11 @@ function calculateWPM(){
 
 function calculateAccuracy(){
 
-  if(typedChars===0)
+  if(typedChars === 0)
     return 100;
 
   return Math.round(
-    (correctChars/typedChars)*100
+    (correctChars / typedChars) * 100
   );
 
 }
@@ -1080,10 +1070,10 @@ function calculateAccuracy(){
 function updateStats(){
 
   wpmElement.textContent =
-  calculateWPM();
+    calculateWPM();
 
   accuracyElement.textContent =
-  calculateAccuracy()+"%";
+    calculateAccuracy() + "%";
 
 }
 
@@ -1097,44 +1087,50 @@ function finish(){
   if(finished)
     return;
 
-  finished=true;
+  finished = true;
 
   clearInterval(interval);
 
   const wpm =
-  calculateWPM();
+    calculateWPM();
 
   const acc =
-  calculateAccuracy();
+    calculateAccuracy();
 
   const seconds =
-  getSeconds();
+    getSeconds();
 
 
   document.getElementById(
     "finalWpm"
-  ).textContent=wpm;
+  ).textContent =
+    wpm;
 
 
   document.getElementById(
     "finalAccuracy"
-  ).textContent=
-  acc+"%";
+  ).textContent =
+    acc + "%";
 
 
   document.getElementById(
     "finalChars"
-  ).textContent=
-  correctChars+"/"+typedChars;
+  ).textContent =
+    correctChars +
+    "/" +
+    typedChars;
 
 
   document.getElementById(
     "finalTime"
-  ).textContent=
-  seconds.toFixed(1)+"s";
+  ).textContent =
+    seconds.toFixed(1) +
+    "s";
 
 
-  result.classList.remove("hidden");
+  result.classList.remove(
+    "hidden"
+  );
 
 
   history.unshift({
@@ -1144,16 +1140,18 @@ function finish(){
     accuracy:acc,
 
     chars:
-    correctChars+"/"+typedChars,
+      correctChars +
+      "/" +
+      typedChars,
 
     date:
-    new Date().toLocaleString()
+      new Date().toLocaleString()
 
   });
 
 
   history =
-  history.slice(0,30);
+    history.slice(0,30);
 
 
   localStorage.setItem(
@@ -1172,30 +1170,43 @@ function restart(){
 
   clearInterval(interval);
 
-  started=false;
+  interval = null;
 
-  finished=false;
+  started = false;
 
-  correctChars=0;
+  finished = false;
 
-  typedChars=0;
+  correctChars = 0;
 
-  input.value="";
+  typedChars = 0;
 
-  timeLeft=testTime;
+  currentText = "";
 
-  timer.textContent=
-  testTime;
+  input.value = "";
 
-  wpmElement.textContent="0";
+  timeLeft = testTime;
 
-  accuracyElement.textContent="100%";
+  timer.textContent =
+    testTime;
 
-  result.classList.add("hidden");
+  wpmElement.textContent =
+    "0";
+
+  accuracyElement.textContent =
+    "100%";
+
+  result.classList.add(
+    "hidden"
+  );
 
   render();
 
-  input.focus();
+  setTimeout(
+    function(){
+      input.focus();
+    },
+    0
+  );
 
 }
 
@@ -1204,17 +1215,24 @@ function restart(){
    MODE
 ========================= */
 
-function setMode(newMode,button){
+function setMode(
+  newMode,
+  button
+){
 
-  mode=newMode;
+  mode = newMode;
 
   document
-  .querySelectorAll(".modeBtn")
-  .forEach(
-    b=>b.classList.remove("active")
-  );
+    .querySelectorAll(".modeBtn")
+    .forEach(
+      function(btn){
+        btn.classList.remove("active");
+      }
+    );
 
-  button.classList.add("active");
+  button.classList.add(
+    "active"
+  );
 
   restart();
 
@@ -1225,17 +1243,25 @@ function setMode(newMode,button){
    TIME
 ========================= */
 
-function setTime(seconds,button){
+function setTime(
+  seconds,
+  button
+){
 
-  testTime=seconds;
+  testTime =
+    seconds;
 
   document
-  .querySelectorAll(".timeBtn")
-  .forEach(
-    b=>b.classList.remove("active")
-  );
+    .querySelectorAll(".timeBtn")
+    .forEach(
+      function(btn){
+        btn.classList.remove("active");
+      }
+    );
 
-  button.classList.add("active");
+  button.classList.add(
+    "active"
+  );
 
   restart();
 
@@ -1246,32 +1272,36 @@ function setTime(seconds,button){
    OPTIONS
 ========================= */
 
-function toggleOption(option){
+function toggleOption(
+  option
+){
 
-  if(option==="punctuation"){
+  if(option === "punctuation"){
 
-    punctuation=!punctuation;
+    punctuation =
+      !punctuation;
 
     document
-    .getElementById("punctuation")
-    .classList.toggle(
-      "active",
-      punctuation
-    );
+      .getElementById("punctuation")
+      .classList.toggle(
+        "active",
+        punctuation
+      );
 
   }
 
 
-  if(option==="numbers"){
+  if(option === "numbers"){
 
-    numbers=!numbers;
+    numbers =
+      !numbers;
 
     document
-    .getElementById("numbers")
-    .classList.toggle(
-      "active",
-      numbers
-    );
+      .getElementById("numbers")
+      .classList.toggle(
+        "active",
+        numbers
+      );
 
   }
 
@@ -1297,38 +1327,39 @@ function focusInput(){
 
 function changeTheme(){
 
-  isDark=!isDark;
+  isDark =
+    !isDark;
 
   document.body
-  .classList.toggle(
-    "light",
-    !isDark
-  );
+    .classList.toggle(
+      "light",
+      !isDark
+    );
 
 }
 
 
 /* =========================
-   FONT SIZE
+   FONT
 ========================= */
 
 function changeFont(size){
 
-  wordsElement.style.fontSize=
-  size+"px";
+  wordsElement.style.fontSize =
+    size + "px";
 
 }
 
 
 /* =========================
-   SETTINGS MODAL
+   SETTINGS
 ========================= */
 
 function openSettings(){
 
   document
-  .getElementById("settingsModal")
-  .showModal();
+    .getElementById("settingsModal")
+    .showModal();
 
 }
 
@@ -1336,8 +1367,8 @@ function openSettings(){
 function closeSettings(){
 
   document
-  .getElementById("settingsModal")
-  .close();
+    .getElementById("settingsModal")
+    .close();
 
 }
 
@@ -1349,48 +1380,56 @@ function closeSettings(){
 function openHistory(){
 
   const list =
-  document.getElementById("history");
+    document.getElementById("history");
 
-  list.innerHTML="";
+  list.innerHTML = "";
 
 
-  if(history.length===0){
+  if(history.length === 0){
 
-    list.innerHTML=
-    "<p>No results yet.</p>";
+    list.innerHTML =
+      "<p>No results yet.</p>";
 
   }else{
 
-    history.forEach(item=>{
+    history.forEach(
+      function(item){
 
-      const div =
-      document.createElement("div");
+        const div =
+          document.createElement("div");
 
-      div.className=
-      "history-item";
+        div.className =
+          "history-item";
 
-      div.innerHTML=`
+        div.innerHTML =
 
-        <b>${item.wpm} WPM</b>
+          "<b>" +
+          item.wpm +
+          " WPM</b>" +
 
-        <span>${item.accuracy}%</span>
+          "<span>" +
+          item.accuracy +
+          "%</span>" +
 
-        <span>${item.chars}</span>
+          "<span>" +
+          item.chars +
+          "</span>" +
 
-        <span>${item.date}</span>
+          "<span>" +
+          item.date +
+          "</span>";
 
-      `;
+        list.appendChild(div);
 
-      list.appendChild(div);
-
-    });
+      }
+    );
 
   }
 
 
   document
-  .getElementById("historyModal")
-  .showModal();
+    .getElementById("historyModal")
+    .showModal();
 
 }
 
@@ -1398,15 +1437,15 @@ function openHistory(){
 function closeHistory(){
 
   document
-  .getElementById("historyModal")
-  .close();
+    .getElementById("historyModal")
+    .close();
 
 }
 
 
 function clearHistory(){
 
-  history=[];
+  history = [];
 
   localStorage.removeItem(
     "typingHistory"
@@ -1418,47 +1457,69 @@ function clearHistory(){
 
 
 /* =========================
-   KEYBOARD SHORTCUTS
+   FIXED KEYBOARD SHORTCUTS
 ========================= */
 
-let tabPressed=false;
+/*
+   Tab alone = NOTHING happens
+   Tab + Enter = restart
+*/
 
 document.addEventListener(
-"keydown",
-function(e){
+  "keydown",
+  function(e){
 
-  if(e.key==="Tab"){
+    if(e.key === "Tab"){
 
-    e.preventDefault();
+      e.preventDefault();
 
-    tabPressed=true;
+      tabPressed = true;
+
+      clearTimeout(tabTimer);
+
+      tabTimer =
+        setTimeout(
+          function(){
+            tabPressed = false;
+          },
+          1200
+        );
+
+      return;
+    }
+
+
+    if(
+      e.key === "Enter" &&
+      tabPressed
+    ){
+
+      e.preventDefault();
+
+      tabPressed = false;
+
+      clearTimeout(tabTimer);
+
+      restart();
+
+      return;
+    }
+
+
+    if(tabPressed){
+
+      tabPressed = false;
+
+      clearTimeout(tabTimer);
+
+    }
 
   }
-
-  else if(
-    tabPressed &&
-    e.key==="Enter"
-  ){
-
-    e.preventDefault();
-
-    tabPressed=false;
-
-    restart();
-
-  }
-
-  else if(e.key==="Escape"){
-
-    restart();
-
-  }
-
-});
+);
 
 
 /* =========================
-   START
+   START PAGE
 ========================= */
 
 render();
